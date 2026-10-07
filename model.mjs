@@ -1,0 +1,8 @@
+export const EXAMPLE='A river changes its shape through erosion and deposition. Fast water carries sediment downstream. Slower water leaves it behind, building banks and islands.';
+export function words(text){return [...String(text).matchAll(/[\p{L}\p{N}][\p{L}\p{M}\p{N}]*(?:[’\x27-][\p{L}\p{M}\p{N}]+)*/gu)].map((m,i)=>({id:i,text:m[0],start:m.index,end:m.index+m[0].length}));}
+export function suggestions(text,count=4){return words(text).filter(w=>w.text.length>5).sort((a,b)=>b.text.length-a.text.length||a.id-b.id).slice(0,count).map(w=>w.id).sort((a,b)=>a-b);}
+export function validSelection(text,selected){const count=words(text).length;return [...new Set(Array.isArray(selected)?selected:[])].filter(n=>Number.isInteger(n)&&n>=0&&n<count).sort((a,b)=>a-b);}
+export function start(selected){return {queue:[...new Set(selected)],remembered:[],retries:0,revealed:false};}
+export function rate(state,remembered){if(!state.revealed||!state.queue.length)return state;const [current,...rest]=state.queue;return {...state,queue:remembered?rest:[...rest,current],remembered:remembered?[...state.remembered,current]:state.remembered,retries:state.retries+(remembered?0:1),revealed:false};}
+export function restore(raw){try{const x=JSON.parse(raw);if(typeof x.text!=='string'||!x.text.trim()||x.text.length>20000)return null;return {text:x.text,selected:validSelection(x.text,x.selected)};}catch{return null;}}
+export function replacePassage(current,text){if(typeof text!=='string'||text.length>20000||!words(text).length)return null;const picks=suggestions(text);return {current:{text,selected:picks.length?picks:words(text).slice(0,3).map(w=>w.id)},previous:{text:current.text,selected:[...current.selected]}};}
