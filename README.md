@@ -1,6 +1,6 @@
 # Recall Fold
 
-Turn your own passage into a gentle, self-rated recall exercise, one hidden word at a time.
+Practice recall by hiding selected words in a passage, revealing each answer, and rating whether you remembered it.
 
 Serve this folder with `python -m http.server 8000`, then open http://localhost:8000. No install, account or runtime dependency is required.
 
@@ -11,5 +11,3 @@ Text and chosen occurrences save locally. Reload starts a fresh session. Saving 
 Run `npm test` or `node --test`. Tests cover occurrence identity, selection validation, queue behavior, completion and malformed storage.
 
 Original implementation inspired by the passage-focused simplicity of GeneralGroovy's Webreader. It turns reading into active recall rather than duplicating speech playback.
-
-Potential depth, not shipped: phrase spans, portable study sets, optional contextual hints, and reviewed long-term practice scheduling.
